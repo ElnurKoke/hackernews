@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: white;
+    background-color: rgb(42, 42, 42);
+    /* box-sizing: border-box; */
+  }
+  
+  header {  
+    position: fixed;
+    background-color: #222222;
+    width: 100vw;
+    height: 10vh;
+    color: white;
+    text-align: center;
+  }
+  footer {
+    position: fixed;
+    bottom: 0;
+    height: 5vh;
+    width: 100%;
+    background-color: #222222;
+    color: white;
+    text-align:left;
+  }
+  
+  #content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  h2{
+    text-align: center;
+  }
+  
+  #posts {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+    height: 80vh;
+    padding: 0vh 5% 5vh 5%;
+    overflow-y: scroll;
+  }
+  #live-data {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+    height: 80vh;
+    padding: 0vh 5% 5vh 5%;
+    overflow-y: auto;
+  }
+
+  .comment{
+    margin-left:10% ;
+  }
+  
+  .post {
+    border-top: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1em 0;
+  }
+  section1 h2 {
+    background-color: red;
+    border-radius: 2px;
+  }
+
+  .container h2{
+    background-color:rgb(42, 42, 42) ;
+  }
+  .container1 h3{
+    background-color: yellow;
+  }
+  .container2 h3{
+    background-color: silver;
+  }
+  .container3 h3{
+    background-color: brown;
+  }
+
+  a{
+    text-decoration: none;
+    color:orange;
+  }
+
+  /* .post:nth-child(odd) {
+    background-color: #343434; 
+  }
+  .post:nth-child(even) {
+      background-color: rgb(42, 42, 42); 
+  } */
+  
+  #load-more {
+    cursor: pointer;
+    margin: 20px auto;
+  }
+  #load-more:hover {
+    color: aqua;
+    scale: 1.05;
+    text-shadow: 1px 1px 4px aqua;
+  }
+  
