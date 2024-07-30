@@ -6,16 +6,14 @@ let maxId=0;
 
 async function fetchPostIds() {
   const response = await fetch(`https://hacker-news.firebaseio.com/v0/${postType}.json`);
-  const rmaxid = await fetch(`https://hacker-news.firebaseio.com/v0/maxitem.json`);
   const postIds = await response.json();
-  const maxid = await rmaxid.json();
   return postIds.slice(lastItemIndex, lastItemIndex + 10);
 }
 
 async function fetchMaxId() {
-  const rmaxid = await fetch(`https://hacker-news.firebaseio.com/v0/maxitem.json`);
-  const maxid = await rmaxid.json();
-  return maxid;
+  const response = await fetch(`https://hacker-news.firebaseio.com/v0/maxitem.json`);
+  const maxId = await response.json();
+  return maxId;
 }
 
 async function fetchPostDetails(postId) {
@@ -40,7 +38,7 @@ async function displayLiveData(){
 async function displayPosts() {
   const postIds = await fetchPostIds();
   for (const id of postIds) {
-    const post = await fetchPostDetails(id);
+    const post = await fetchPostDetails(41105276);
     const postElement = document.createElement('div');
     postElement.className = 'post';
     postElement.innerHTML = generatePostHTML(post);
@@ -80,7 +78,11 @@ function formatUnixTime(unixTime, timezoneOffset) {
 }
 
 function generatePostHTML(post) {
-  let date = formatUnixTime(post.time, 5);
+  let date = 'null time';
+  if (post.time){
+    date = formatUnixTime(post.time, 5);
+  }
+  
   switch (post.type) {
       case 'story':
       return `
@@ -129,8 +131,6 @@ displayLiveData();
 
 displayPosts();
 
-
-
 async function fetchComments(postId) {
     const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${postId}.json`);
     const post = await response.json();
@@ -141,7 +141,8 @@ async function fetchComments(postId) {
         commentElement.className = 'comment';
         if (post.type == 'comment'){
           const strongElement = document.createElement('p');
-          strongElement.innerHTML = `<strong> ↪️  ${post.by}(${post.text.substring(0,7)}...)</strong>`;
+          const commentText = post.text ? post.text.substring(0, 7) + '...' : 'No content';
+          strongElement.innerHTML = `<strong> ↪️ ${post.by}(${commentText})</strong>`;
           commentElement.appendChild(strongElement);
         };
         const postContent = generatePostHTML(comment);
@@ -152,7 +153,7 @@ async function fetchComments(postId) {
         const postsContainer = document.getElementById('posts');
         postsContainer.appendChild(commentElement);
 
-        if (commentId.kids){
+        if (comment.kids && comment.kids.length > 0){
           console.log(comment.by+"- Recourses comm \n");
           await fetchComments(commentId);
         }
@@ -171,7 +172,6 @@ async function fetchComments(postId) {
   
   setInterval(displayLiveData, 4000); 
 
-  
 
   function throttle(func, limit) {
     let inThrottle;

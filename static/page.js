@@ -1,3 +1,6 @@
+const content = document.getElementById('content');
+let commentCount = 0;
+
 function getParameterByName(name) {
     const url = new URL(window.location.href);
     return url.searchParams.get(name);
@@ -17,25 +20,32 @@ async function fetchComments(postId) {
         const comment = await fetchPostDetails(commentId);
         const commentElement = document.createElement('div');
         commentElement.className = 'comment';
-        
-        const strongElement = document.createElement('p');
-        const commentText = post.text ? post.text.substring(0, 7) + '...' : 'No content';
-        strongElement.innerHTML = `<strong> ↪️ ${post.by}(${commentText})</strong>`;
-        commentElement.appendChild(strongElement);
-        
+        if (post.type == 'comment'){
+            const strongElement = document.createElement('p');
+            const commentText = post.text ? post.text.substring(0, 7) + '...' : 'No content';
+            strongElement.innerHTML = `<strong> ↪️ ${post.by}(${commentText})</strong>`;
+            commentElement.appendChild(strongElement);
+        };
         const postContent = generatePostHTML(comment);
         const contentContainer = document.createElement('div');
         contentContainer.innerHTML = postContent;
         commentElement.appendChild(contentContainer);
+
         content.appendChild(commentElement);
-    }
+
+        if (comment.kids && comment.kids.length > 0){
+            console.log(comment.by+"- Recourses comm \n");
+            await fetchComments(commentId);
+        }
     }
 }
+}
+
 
 async function displayPost() {
     const post = await fetchPostDetails(id);
     const postElement = document.createElement('div');
-    postElement.className = 'content';
+    postElement.className = 'main-content';
     postElement.innerHTML = generatePostHTML(post);
     content.appendChild(postElement);
     if (post.type === 'story' || post.type === 'poll' || post.type === 'comment') {
@@ -112,11 +122,5 @@ function generatePostHTML(post) {
         return `<p>error type post</p>`;
     }
 }
-displayPost()
-// if (id && data[id]) {
-//     document.getElementById('content-title').innerText = `Content for ID ${id}`;
-//     document.getElementById('content-body').innerText = data[id];
-// } else {
-//     document.getElementById('content-title').innerText = `Content not found`;
-//     document.getElementById('content-body').innerText = `No content available for ID ${id}`;
-// }
+displayPost();
+// setInterval(displayPost, 5000); 
