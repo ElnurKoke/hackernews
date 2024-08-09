@@ -38,7 +38,7 @@ async function displayLiveData(){
 async function displayPosts() {
   const postIds = await fetchPostIds();
   for (const id of postIds) {
-    const post = await fetchPostDetails(41105276);
+    const post = await fetchPostDetails(id);
     const postElement = document.createElement('div');
     postElement.className = 'post';
     postElement.innerHTML = generatePostHTML(post);
